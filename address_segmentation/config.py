@@ -27,10 +27,12 @@ asi = tmp['ascii']
 unic = tmp['unicode']
 upchars = tmp['upper-characters']
 
+_f = lambda x: {'layer_' + str(i): {'w': x[0], 'b': x[1]} for i, x in enumerate(x.weights)}
+
 models = {
-    'name': loadPKL(curfolder + '/' + folders['model-source'] + '/' + files['model-source']['name']),
-    'address': loadPKL(curfolder + '/' + folders['model-source'] + '/' + files['model-source']['address']),
-    'phone': loadPKL(curfolder + '/' + folders['model-source'] + '/' + files['model-source']['phone']),
+    'name': _f(loadPKL(curfolder + '/' + folders['model-source'] + '/' + files['model-source']['name'])),
+    'address': _f(loadPKL(curfolder + '/' + folders['model-source'] + '/' + files['model-source']['address'])),
+    'phone': _f(loadPKL(curfolder + '/' + folders['model-source'] + '/' + files['model-source']['phone'])),
 }
 
 skip_punctuation = ' .'
