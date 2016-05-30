@@ -62,42 +62,42 @@ def segment_api_v1_1(text):
 
     ic = -1
     _ = checkCandidate(preAddr, labels, otherLabel)
-    candidates = [(preAddr, 0, _[1], _[0])]
 
-    while (ic + 1 < len(candidates)):
+    candidates = {preAddr: (0, _[1], _[0])}
+    candidateList = [preAddr]
+
+    def addText(text, pos):
+        rs = checkCandidate(text, labels, otherLabel)
+        return (pos, rs[1], rs[0])
+
+    while (ic + 1 < len(candidateList)):
         ic += 1
-        segs = combinationTerm(candidates[ic][0])
+        segs = combinationTerm(candidateList[ic])
         for iseg in segs:
-            rs0 = checkCandidate(iseg[0], labels, otherLabel)
-            rs1 = checkCandidate(iseg[1], labels, otherLabel)
-            if (rs0[0] in labels or rs1[0] in labels):
-
-                tmp = (iseg[0], candidates[ic][1], rs0[1], rs0[0])
-                if (tmp not in candidates):
-                    candidates.append(tmp)
-
-                tmp = (iseg[1], candidates[ic][1]+len(iseg[0]), rs1[1], rs1[0])
-                if (tmp not in candidates):
-                    candidates.append(tmp)
+            if (iseg[0] not in candidates):
+                candidateList.append(iseg[0])
+                candidates[iseg[0]] = addText(iseg[0], candidates[candidateList[ic]][0])
+            if (iseg[1] not in candidates):
+                candidateList.append(iseg[1])
+                candidates[iseg[1]] = addText(iseg[1], candidates[candidateList[ic]][0] + len(iseg[0]))
 
     skiplist = [[] for i in range(len(text))]
-    for termtuple in candidates[0:]:
-        if (termtuple[3] != otherLabel):
-            skiplist[termtuple[1]].append(termtuple)
-
+    for ttext, tvalue in candidates.items():
+        if (tvalue[2] != otherLabel):
+            skiplist[tvalue[0]].append([ttext, tvalue[1], tvalue[2]])
 
 
     _results = []
     def findResults(text, n, i, l, lt):
         if (i >= len(text)):
-            _results.append({'solution': copy.deepcopy(l), 'score': sum([_[2] for _ in l])})
+            _results.append({'solution': copy.deepcopy(l), 'score': sum([_[1] for _ in l])})
         elif (n < 7):
             for tt in skiplist[i]:
-                if (tt[3] not in lt):
-                    if (tt[2] >= 0.01):
-                        lt.append(tt[3])
+                if (tt[2] not in lt):
+                    if (tt[1] >= 0.01):
+                        lt.append(tt[2])
                         l.append(tt)
-                        findResults(text, n+1, tt[1]+len(tt[0]), l, lt)
+                        findResults(text, n+1, i+len(tt[0]), l, lt)
                         del lt[-1]
                         del l[-1]
 
@@ -110,7 +110,7 @@ def segment_api_v1_1(text):
         tp = {ilabel: '' for ilabel in labels}
         tp['score'] = _['score']
         for i in _['solution']:
-            tp[i[3]] = i[0]
+            tp[i[2]] = i[0]
         results.append(tp)
 
     return results
