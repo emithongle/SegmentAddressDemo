@@ -1,5 +1,6 @@
 from address_segmentation.config import *
 import itertools as it
+from address_segmentation.config import _punc, _whitespace
 
 def segmentText(text):
     text = text.strip(' \n,.')
@@ -44,3 +45,35 @@ def segmentText(text):
         ls.append([term1, term2, term3, score])
 
     return ls
+
+def combinationTerm(text):
+    bg, i, flag = '', -1, True
+    puncs = list(_punc.keys()) + list(_whitespace.keys())
+    while (i+1 < len(text) and flag):
+        i += 1
+        if (text[i] in puncs):
+            bg = bg + text[i]
+        else:
+            flag = False
+
+    ed, i, flag = '', len(text), True
+    while (i-1 >= 0 and flag):
+        i -= 1
+        if (text[i] in puncs):
+            ed = text[i] + ed
+        else:
+            flag = False
+
+    text = text.strip(''.join(puncs))
+    results = []
+    puncScore = 0
+    for i, c in enumerate(text):
+        if (c in puncs):
+            if (text[i-1] not in puncs):
+                results.append((bg + text[:i+1], text[i+1:] + ed))
+                puncScore = _punc[c] if c in _punc else _whitespace[c]
+            elif (puncScore < _punc[c] if c in _punc else _whitespace[c]):
+                results[-1] = (bg + text[:i+1], text[i+1:] + ed)
+                puncScore = _punc[c] if c in _punc else _whitespace[c]
+
+    return results

@@ -1,12 +1,14 @@
 import tornado.ioloop
 import tornado.web
-from address_segmentation.segment_api import segment_api
+from address_segmentation.segment_api import segment_api_v1_0, segment_api_v1_1
 import json
 
 class MainHandler(tornado.web.RequestHandler):
     def get(self):
         text = self.get_argument('addText', True)
-        self.write(json.dumps(segment_api(text), ensure_ascii=False))
+        # self.write(json.dumps(segment_api_v1_0(text), ensure_ascii=False))
+        self.write(json.dumps(segment_api_v1_1(text), ensure_ascii=False))
+
 
 
 def make_app():

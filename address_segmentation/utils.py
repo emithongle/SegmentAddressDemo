@@ -104,3 +104,25 @@ def loadPKL(filepath):
         except:
             model = pickle.load(f)
     return model
+
+
+def preprocessPuncText(text):
+    tmp = ''
+    for i, c in enumerate(text):
+        tmp += c if (c not in string.punctuation + string.whitespace) else ' '
+
+    return tmp.lower()
+
+def removeKeyword(text, poses):
+    for kw, i in poses:
+        for j in range(i, i+len(kw)+1):
+            text = text[:i] + ' ' * (len(kw) + 1) + text[i+len(kw)+1:]
+    return text
+
+def findPoses(l):
+    poses = []
+    for m in l:
+        poses.append([m.group(), m.start()])
+    return poses
+
+

@@ -1,4 +1,5 @@
 from address_segmentation.utils import *
+import re
 
 curfolder = 'address_segmentation'
 
@@ -184,3 +185,20 @@ featureConfig = {
         ('b()', True)
     ]
 }
+
+
+term_regex = {
+    'name': re.compile(r"(?:^|(?<= ))(" + '|'.join(tmp['title']) + ")(?:(?= )|$)"),
+    'address': re.compile(r"(?:^|(?<= ))(" + '|'.join(tmp['address']) + ")(?:(?= )|$)"),
+    'phone': re.compile(r"(?:^|(?<= ))(" + '|'.join(tmp['phone']) + ")(?:(?= )|$)"),
+    'company': re.compile(r"(?:^|(?<= ))(" + '|'.join(tmp['company']) + ")(?:(?= )|$)"),
+    'fax': re.compile(r"(?:^|(?<= ))(" + '|'.join(tmp['fax']) + ")(?:(?= )|$)"),
+
+    'email': re.compile(r"(?:^|(?<= ))(" + '|'.join(tmp['email']) + ")(?:(?= )|$)"),
+    'url': re.compile(r"(?:^|(?<= ))(" + '|'.join(tmp['url']) + ")(?:(?= )|$)"),
+
+    'unknown': re.compile(r"")
+}
+
+email_regex = re.compile(r"(?:^|(?<= ))([a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+)(?:(?= )|$)")
+url_regex = re.compile(r"""(?i)\b((?:https?://|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:\'".,<>?\xab\xbb\u201c\u201d\u2018\u2019]))""")
