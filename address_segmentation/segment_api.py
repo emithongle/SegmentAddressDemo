@@ -5,6 +5,7 @@ from address_segmentation.segment import segmentText, combinationTerm
 from address_segmentation.model import clasify, checkCandidate
 from config import models, term_regex, string
 from address_segmentation.utils import preprocessPuncText, findPoses, removeKeyword
+from config import rm_preprocessed_punctuation 
 
 def segment_api_v1_0(text):
 
@@ -116,7 +117,7 @@ def segment_api_v1_1(text):
         tp = {ilabel: '' for ilabel in labels}
         tp['score'] = _['score']
         for i in _['solution']:
-            tp[i[3]] = i[0]
+            tp[i[3]] = i[0].strip(rm_preprocessed_punctuation)
         results.append(tp)
 
     return results

@@ -17,6 +17,9 @@ def saveLog(log, filePath=folders['log'] + '/' + files['log']['log']):
             log['imageURL'],
             log['ocrText'],
             str(segment_api_v1_1(log['ocrText'])),
+            log['name'],
+            log['address'],
+            log['phone']
         ])
 
         saveXLSX({'log-result': data}, filePath)
