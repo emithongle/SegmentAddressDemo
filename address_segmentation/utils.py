@@ -84,26 +84,26 @@ def containTerm(text, termSet):
     return 1 if sum([1 for term in termSet if text.find(term) >= 0]) else 0
 
 
-def readFile(file):
-    strList = []
-    infile = open(file, encoding="utf-8")
-    for line in infile:
-        strList.append(line)
-    return strList
-
-def loadJson(file):
-    try:
-        return json.loads(''.join(readFile(file)))
-    except:
-        return None
-
-def loadPKL(filepath):
-    with open(filepath, 'rb') as f:
-        try:
-            model = pickle.load(f, encoding='latin1')
-        except:
-            model = pickle.load(f)
-    return model
+# def readFile(file):
+#     strList = []
+#     infile = open(file, encoding="utf-8")
+#     for line in infile:
+#         strList.append(line)
+#     return strList
+#
+# def loadJson(file):
+#     try:
+#         return json.loads(''.join(readFile(file)))
+#     except:
+#         return None
+#
+# def loadPKL(filepath):
+#     with open(filepath, 'rb') as f:
+#         try:
+#             model = pickle.load(f, encoding='latin1')
+#         except:
+#             model = pickle.load(f)
+#     return model
 
 
 def preprocessPuncText(text):

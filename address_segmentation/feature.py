@@ -1,6 +1,9 @@
-from address_segmentation.config import *
-import numpy as np
 import re
+
+import numpy as np
+
+from config import *
+from address_segmentation.utils import *
 
 fFeatures = {
     'length': lambda x: len(x),

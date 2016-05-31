@@ -1,19 +1,26 @@
-from address_segmentation.utils import *
+# from address_segmentation.utils import *
 import re
+from db.store import *
+import string
 
 curfolder = 'address_segmentation'
 
 folders = {
-    'data-source': 'data-src',
-    'model-source': 'model-src'
+    'data-source': 'db/data-src',
+    'model-source': 'db/model-src',
+    'log': 'db/log',
+    'image': 'db/image-src'
 }
 
 files = {
     'data-source': { 'dictionary': 'dictionary.json' },
-    'model-source': {'name': 'model_name.pkl', 'address': 'model_address.pkl', 'phone': 'model_phone.pkl'}
+    'model-source': {'name': 'model_name.pkl', 'address': 'model_address.pkl', 'phone': 'model_phone.pkl'},
+    'log': {'log': 'log.xlsx'},
+    'image': {}
 }
 
-tmp = loadJson(curfolder + '/' + folders['data-source'] + '/' + files['data-source']['dictionary'])
+# tmp = loadJson(curfolder + '/' + folders['data-source'] + '/' + files['data-source']['dictionary'])
+tmp = loadJson(folders['data-source'] + '/' + files['data-source']['dictionary'])
 nameTermSet = tmp['name-term-set']
 addressTermSet = tmp['address-term-set']
 phoneTermSet = tmp['phone-term-set']
@@ -31,9 +38,9 @@ upchars = tmp['upper-characters']
 _f = lambda x: {'layer_' + str(i): {'w': x[0], 'b': x[1]} for i, x in enumerate(x.weights)}
 
 models = {
-    'name': _f(loadPKL(curfolder + '/' + folders['model-source'] + '/' + files['model-source']['name'])),
-    'address': _f(loadPKL(curfolder + '/' + folders['model-source'] + '/' + files['model-source']['address'])),
-    'phone': _f(loadPKL(curfolder + '/' + folders['model-source'] + '/' + files['model-source']['phone'])),
+    'name': _f(loadPKL(folders['model-source'] + '/' + files['model-source']['name'])),
+    'address': _f(loadPKL(folders['model-source'] + '/' + files['model-source']['address'])),
+    'phone': _f(loadPKL(folders['model-source'] + '/' + files['model-source']['phone'])),
 }
 
 skip_punctuation = ' .'
@@ -47,11 +54,11 @@ rm_preprocessed_punctuation = string.punctuation + string.whitespace # """ ,"""
 
 _punc = {"!": 1, "\"": 0.5, "#": 1, "$": 1, "%": 1, "&": 1, "'": 1, "(": 0.5, ")": 1, "*": 1, "+": 0.5, ",": 1,
          "-": 0.8, ".": 0.8, "/": 0.5, ":": 1, ";": 1, "<": 1, "=": 1, ">": 1, "?": 1, "@": 0.8, "[": 0.5, "\\": 0.5,
-         "]": 1, "^": 1, "_": 1, "`": 1, "{": 0.5, "|": 1, "}": 1, "~": 1, " ": 0.1, "\t": 1, "\n": 1, "\r": 1, "\v": 1,
-         "\f": 1}
+         "]": 1, "^": 1, "_": 1, "`": 1, "{": 0.5, "|": 1, "}": 1, "~": 1, " ": 0.1, "\t": 1, "\n": 1, "\r": 1, "\v": 1, "\f": 1}
 
-split_characters = _punc.copy()
+# split_characters = _punc.copy()
 # split_characters.update(_whitespace)
+split_characters = _punc
 
 featureConfig = {
     'name': [

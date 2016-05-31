@@ -1,6 +1,8 @@
-from address_segmentation.feature import getFeature
 import numpy as np
-from address_segmentation.config import models, email_regex, url_regex
+
+from address_segmentation.feature import getFeature
+from config import models, email_regex, url_regex
+
 
 def sigmoid(x):
   return 1 / (1 + np.exp(-x))
@@ -9,13 +11,10 @@ def softmax(x):
     return np.exp(x) / np.sum(np.exp(x), axis=0)
 
 def clasify(clfs, text):
-    # probName = _f(clfs['name'], text, 'name')[0]
     probName = calANNProba(clfs['name'], text, 'name')
 
-    # probAddress = _f(clfs['address'], text, 'address')[0]
     probAddress = calANNProba(clfs['address'], text, 'address')
 
-    # probPhone = _f(clfs['phone'], text, 'phone')[0]
     probPhone = calANNProba(clfs['phone'], text, 'phone')
 
     proba = [
@@ -25,7 +24,6 @@ def clasify(clfs, text):
         probName[1] * probAddress[1] * probPhone[1]
     ]
 
-    # _ = np.exp(proba) / np.sum(np.exp(proba))
     _ = np.asarray(proba) / np.sum(proba)
     return max(range(len(_)), key=_.__getitem__), _
 

@@ -1,8 +1,10 @@
-from address_segmentation.segment import segmentText, preprocessPuncText, findPoses, removeKeyword, combinationTerm
-from address_segmentation.model import clasify, checkCandidate
-from address_segmentation.config import models, term_regex, email_regex, url_regex, string
 from math import log
 import copy
+
+from address_segmentation.segment import segmentText, combinationTerm
+from address_segmentation.model import clasify, checkCandidate
+from config import models, term_regex, string
+from address_segmentation.utils import preprocessPuncText, findPoses, removeKeyword
 
 def segment_api_v1_0(text):
 
@@ -107,21 +109,14 @@ def segment_api_v1_1(text):
 
     for ir in range(len(_results)):
         for i in range(len(_results[ir]['solution'])):
-            _results[ir]['solution'][i][0] = text[_results[ir]['solution'][i][1]:_results[ir]['solution'][i][1] + len(
-                _results[ir]['solution'][i][0])]
-
-    def removeNoiseCharacters(text):
-        text = text.strip(string.punctuation + string.whitespace)
-        while ('  ' in text):
-            text = text.replace('  ', ' ')
-        return text
+            _results[ir]['solution'][i][0] = text[_results[ir]['solution'][i][1]:_results[ir]['solution'][i][1] + len(_results[ir]['solution'][i][0])]
 
     results = []
-    for _ in _results[:3]:
+    for _ in _results:
         tp = {ilabel: '' for ilabel in labels}
         tp['score'] = _['score']
         for i in _['solution']:
-            tp[i[3]] = removeNoiseCharacters(i[0])
+            tp[i[3]] = i[0]
         results.append(tp)
 
     return results
