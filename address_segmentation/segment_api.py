@@ -110,12 +110,18 @@ def segment_api_v1_1(text):
             _results[ir]['solution'][i][0] = text[_results[ir]['solution'][i][1]:_results[ir]['solution'][i][1] + len(
                 _results[ir]['solution'][i][0])]
 
+    def removeNoiseCharacters(text):
+        text = text.strip(string.punctuation + string.whitespace)
+        while ('  ' in text):
+            text = text.replace('  ', ' ')
+        return text
+
     results = []
     for _ in _results[:3]:
         tp = {ilabel: '' for ilabel in labels}
         tp['score'] = _['score']
         for i in _['solution']:
-            tp[i[3]] = i[0]
+            tp[i[3]] = removeNoiseCharacters(i[0])
         results.append(tp)
 
     return results
