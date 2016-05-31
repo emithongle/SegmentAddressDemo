@@ -25,3 +25,6 @@ from address_segmentation.segment_api import segment_api_v1_0, segment_api_v1_1
 
 # print(segment_api_v1_1('263/11 Nguyen Trai, Q.1, Nguyen Cong Vien, 0918030924, abc@gmail.com www.bagasus.com'))
 
+addr = 'CHI NHANH TAI TP. HO CHI MINH\nDia chi: 461 Ba Hat - Phuong 8 - Quan 10 - TP. Ho Chi Minh\nDien thoai: 08. 6264 5449\n' \
+       'Email: inhoadon@inhanoi.vn | Website: www.inhoadonhcm.com'
+print(segment_api_v1_1(addr))

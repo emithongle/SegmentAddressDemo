@@ -1,6 +1,6 @@
 from address_segmentation.config import *
 import itertools as it
-from address_segmentation.config import _punc, _whitespace
+from address_segmentation.config import _punc
 
 def segmentText(text):
     text = text.strip(' \n,.')
@@ -48,10 +48,9 @@ def segmentText(text):
 
 def combinationTerm(text):
     bg, i, flag = '', -1, True
-    puncs = list(_punc.keys()) + list(_whitespace.keys())
     while (i+1 < len(text) and flag):
         i += 1
-        if (text[i] in puncs):
+        if (text[i] in _punc):
             bg = bg + text[i]
         else:
             flag = False
@@ -59,21 +58,21 @@ def combinationTerm(text):
     ed, i, flag = '', len(text), True
     while (i-1 >= 0 and flag):
         i -= 1
-        if (text[i] in puncs):
+        if (text[i] in _punc):
             ed = text[i] + ed
         else:
             flag = False
 
-    text = text.strip(''.join(puncs))
+    text = text.strip(''.join(list(_punc.keys())))
     results = []
     puncScore = 0
     for i, c in enumerate(text):
-        if (c in puncs):
-            if (text[i-1] not in puncs):
-                results.append((bg + text[:i+1], text[i+1:] + ed))
-                puncScore = _punc[c] if c in _punc else _whitespace[c]
-            elif (puncScore < _punc[c] if c in _punc else _whitespace[c]):
-                results[-1] = (bg + text[:i+1], text[i+1:] + ed)
-                puncScore = _punc[c] if c in _punc else _whitespace[c]
+        if (c in _punc):
+            if (text[i - 1] not in _punc):
+                results.append((bg + text[:i + 1], text[i + 1:] + ed))
+                puncScore = _punc[c]
+            elif (puncScore < _punc[c]):
+                results[-1] = (bg + text[:i + 1], text[i + 1:] + ed)
+                puncScore = _punc[c]
 
     return results

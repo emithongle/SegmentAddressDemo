@@ -84,18 +84,18 @@ def segment_api_v1_1(text):
     skiplist = [[] for i in range(len(text))]
     for ttext, tvalue in candidates.items():
         if (tvalue[2] != otherLabel):
-            skiplist[tvalue[0]].append([ttext, tvalue[1], tvalue[2]])
+            skiplist[tvalue[0]].append([ttext] + list(tvalue))
 
 
     _results = []
     def findResults(text, n, i, l, lt):
         if (i >= len(text)):
-            _results.append({'solution': copy.deepcopy(l), 'score': sum([_[1] for _ in l])})
+            _results.append({'solution': copy.deepcopy(l), 'score': sum([_[2] for _ in l])})
         elif (n < 7):
             for tt in skiplist[i]:
-                if (tt[2] not in lt):
-                    if (tt[1] >= 0.01):
-                        lt.append(tt[2])
+                if (tt[3] not in lt):
+                    if (tt[2] >= 0.01):
+                        lt.append(tt[3])
                         l.append(tt)
                         findResults(text, n+1, i+len(tt[0]), l, lt)
                         del lt[-1]
@@ -103,14 +103,19 @@ def segment_api_v1_1(text):
 
     findResults(text, 1, 0, [], [])
 
-    _results = sorted(_results, key=lambda x: x['score'], reverse=True)
+    _results = sorted(_results, key=lambda x: x['score'], reverse=True)[:3]
+
+    for ir in range(len(_results)):
+        for i in range(len(_results[ir]['solution'])):
+            _results[ir]['solution'][i][0] = text[_results[ir]['solution'][i][1]:_results[ir]['solution'][i][1] + len(
+                _results[ir]['solution'][i][0])]
 
     results = []
     for _ in _results[:3]:
         tp = {ilabel: '' for ilabel in labels}
         tp['score'] = _['score']
         for i in _['solution']:
-            tp[i[2]] = i[0]
+            tp[i[3]] = i[0]
         results.append(tp)
 
     return results
