@@ -19,7 +19,7 @@ def saveLog(log, filePath=folders['log'] + '/' + files['log']['log']):
         data.append([
             strftime("%a, %d %b %Y %H:%M:%S", localtime()),
             log['uploadTime'],
-            log['ocrTime'],
+            '',
             log['segmentTime'],
             realSegmentTime,
             log['imageURL'],

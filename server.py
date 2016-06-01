@@ -9,7 +9,7 @@ class MainHandler(tornado.web.RequestHandler):
         text = self.get_argument('addText', False)
 
         uploadTime = self.get_argument('uploadTime', False)
-        ocrTime = self.get_argument('ocrTime', False)
+        # ocrTime = self.get_argument('ocrTime', False)
         segmentTime = self.get_argument('segmentTime', False)
         ocrText = self.get_argument('ocrText', False)
         imageURL = self.get_argument('imageURL', False)
@@ -22,8 +22,8 @@ class MainHandler(tornado.web.RequestHandler):
 
         if (text):
             self.write(json.dumps(segment_api_v1_1(text), ensure_ascii=False))
-        elif (uploadTime and ocrTime and segmentTime and ocrText and imageURL):
-            log = {'uploadTime': uploadTime, 'ocrTime': ocrTime,
+        elif (uploadTime and segmentTime and ocrText and imageURL):
+            log = {'uploadTime': uploadTime, 
                          'segmentTime': segmentTime, 'ocrText': ocrText, 'imageURL': imageURL, 'idResult': idResult,
                          'name': name, 'address': address, 'phone': phone}
             if (saveLog(log)):
