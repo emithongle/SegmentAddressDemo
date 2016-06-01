@@ -16,11 +16,16 @@ class MainHandler(tornado.web.RequestHandler):
 
         idResult = self.get_argument('idResult', False)
 
+        name = self.get_argument('name', '')
+        address = self.get_argument('name', '')
+        phone = self.get_argument('name', '')
+
         if (text):
             self.write(json.dumps(segment_api_v1_1(text), ensure_ascii=False))
         elif (uploadTime and ocrTime and segmentTime and ocrText and imageURL):
             log = {'uploadTime': uploadTime, 'ocrTime': ocrTime,
-                         'segmentTime': segmentTime, 'ocrText': ocrText, 'imageURL': imageURL, 'idResult': idResult}
+                         'segmentTime': segmentTime, 'ocrText': ocrText, 'imageURL': imageURL, 'idResult': idResult,
+                         'name': name, 'address': address, 'phone': phone}
             if (saveLog(log)):
                 self.write('Okay!')
 
