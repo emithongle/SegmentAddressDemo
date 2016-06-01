@@ -17,8 +17,8 @@ class MainHandler(tornado.web.RequestHandler):
         idResult = self.get_argument('idResult', False)
 
         name = self.get_argument('name', '')
-        address = self.get_argument('name', '')
-        phone = self.get_argument('name', '')
+        address = self.get_argument('address', '')
+        phone = self.get_argument('phone', '')
 
         if (text):
             self.write(json.dumps(segment_api_v1_1(text), ensure_ascii=False))
