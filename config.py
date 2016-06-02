@@ -59,6 +59,7 @@ _punc = {"!": 1, "\"": 0.5, "#": 1, "$": 1, "%": 1, "&": 1, "'": 1, "(": 0.5, ")
 # split_characters = _punc.copy()
 # split_characters.update(_whitespace)
 split_characters = _punc
+viableCharacters = string.printable + unic
 
 featureConfig = {
     'name': [

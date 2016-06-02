@@ -5,7 +5,7 @@ from address_segmentation.segment import segmentText, combinationTerm
 from address_segmentation.model import clasify, checkCandidate
 from config import models, term_regex, string
 from address_segmentation.utils import preprocessPuncText, findPoses, removeKeyword
-from config import rm_preprocessed_punctuation 
+from config import rm_preprocessed_punctuation, viableCharacters
 
 def segment_api_v1_0(text):
 
@@ -33,6 +33,8 @@ def segment_api_v1_0(text):
 
 
 def segment_api_v1_1(text):
+
+    text = ''.join([c for c in text if (c in viableCharacters)])
 
     preAddr = preprocessPuncText(text)
 
