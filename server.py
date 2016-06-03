@@ -2,9 +2,17 @@ import tornado.ioloop
 import tornado.web
 from address_segmentation.segment_api import segment_api_v1_0, segment_api_v1_1
 import json
-from logs.loger import saveLog
+from logs.loger import saveLog, saveWebLog
+from config import rm_preprocessed_punctuation
 
 class MainHandler(tornado.web.RequestHandler):
+    def get(self):
+        self.write('Main.GET')
+
+    def post(self):
+        self.write('Main.POST')
+
+class MainServiceHandler(MainHandler):
     def get(self):
         text = self.get_argument('addText', False)
 
@@ -29,11 +37,41 @@ class MainHandler(tornado.web.RequestHandler):
             if (saveLog(log)):
                 self.write('Okay!')
 
+class ORCText(object):
+    orcText = ''
+    save = False
+
+class MainWebHandler(MainHandler):
+
+    def post(self):
+        idCorrect = self.get_argument('correct', '')
+
+        f = lambda x, y: x.strip(rm_preprocessed_punctuation) != y.strip(rm_preprocessed_punctuation)
+
+        if (f(ORCText.orcText, 'Please input address...') and f(ORCText.orcText, '')):
+            if (ORCText.save):
+                saveWebLog({'ocrText': ORCText.orcText, 'idResult': idCorrect })
+
+        ORCText.orcText = self.get_argument('orcText', None)
+        if (f(ORCText.orcText, 'Please input address...') and f(ORCText.orcText, '')):
+            results = segment_api_v1_1(ORCText.orcText)
+            self.render('index.html', results=results, orcText=ORCText.orcText)
+            if (len(results) == 0):
+                saveWebLog({'ocrText': ORCText.orcText, 'idResult': '' })
+                ORCText.save = False
+            else:
+                ORCText.save = True
+        else:
+            self.render('index.html', results=[], orcText='')
+
+    def get(self):
+        self.render('index.html', results=[], orcText='')
 
 
 def make_app():
     return tornado.web.Application([
-        (r"/", MainHandler),
+        (r"/", MainWebHandler),
+        (r"/sv", MainServiceHandler),
     ])
 
 if __name__ == "__main__":

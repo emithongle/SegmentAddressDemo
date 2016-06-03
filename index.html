@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+
+{% if results %}
+
+<h3>Original Text: </h3>
+<p form="orcform" name="previousText"> {{orcText}} </p>
+<br>
+<br>
+<h3>Result: {{len(results)}} Options</h3>
+<br>
+<table style="width:100%" border=1>
+    <tr>
+        <th>id</th>
+        <th>Name</th>
+        <th>Address</th>
+        <th>Phone</th>
+        <th>Score</th>
+        <th>Correct</th>
+    </tr>
+    {% for id, result in enumerate(results) %}
+    <tr>
+        <td>{{ id }}</td>
+        <td>{{ result['name'] }}</td>
+        <td>{{ result['address'] }}</td>
+        <td>{{ result['phone'] }}</td>
+        <td>{{ result['score'] }}</td>
+        <td><input type="radio" name="correct" value={{str(id)}} form="orcform"></td>
+    </tr>
+    {% end %}
+    {% else %}
+    <tr>
+        <td colspan = 2> No results returned</td>
+    </tr>
+    {% end %}
+</table>
+
+<h2> Address Segment Testing </h2>
+
+<form action="/" id="orcform" method="post">
+    <textarea rows="10" cols="100" name="orcText">Please input address...</textarea>
+    <input type="hidden" name="country" value="Norway">
+    <br>
+    <input type="submit" value="Submit">
+</form>
+
+</body>
+</html>

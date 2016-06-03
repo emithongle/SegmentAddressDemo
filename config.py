@@ -15,7 +15,7 @@ folders = {
 files = {
     'data-source': { 'dictionary': 'dictionary.json' },
     'model-source': {'name': 'model_name.pkl', 'address': 'model_address.pkl', 'phone': 'model_phone.pkl'},
-    'log': {'log': 'log.xlsx'},
+    'log': {'log': 'log.xlsx', 'wlog': 'wlog.xlsx'},
     'image': {}
 }
 
