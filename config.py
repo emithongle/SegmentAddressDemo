@@ -53,8 +53,8 @@ rm_preprocessed_punctuation = string.punctuation + string.whitespace # """ ,"""
 # _whitespace = {" ": 0.1, "\t": 1, "\n": 1, "\r": 1, "\v": 1, "\f": 1}
 
 _punc = {"!": 1, "\"": 0.5, "#": 1, "$": 1, "%": 1, "&": 1, "'": 1, "(": 0.5, ")": 1, "*": 1, "+": 0.5, ",": 1,
-         "-": 0.8, ".": 0.8, "/": 0.5, ":": 1, ";": 1, "<": 1, "=": 1, ">": 1, "?": 1, "@": 0.8, "[": 0.5, "\\": 0.5,
-         "]": 1, "^": 1, "_": 1, "`": 1, "{": 0.5, "|": 1, "}": 1, "~": 1, " ": 0.1, "\t": 1, "\n": 1, "\r": 1, "\v": 1, "\f": 1}
+         "-": 0.8, ".": 0.8, "/": 0.5, ":": 0.1, ";": 1, "<": 1, "=": 1, ">": 1, "?": 1, "@": 0.8, "[": 0.5, "\\": 0.5,
+         "]": 1, "^": 1, "_": 1, "`": 1, "{": 0.5, "|": 1, "}": 1, "~": 1, " ": 0.2, "\t": 1, "\n": 1, "\r": 1, "\v": 1, "\f": 1}
 
 # split_characters = _punc.copy()
 # split_characters.update(_whitespace)
@@ -97,10 +97,10 @@ featureConfig = {
         ('blast-character-digit', True),
         ('blast-character-ascii', True),
 
-        ('b#ascii >= 7', True),
+        ('b#ascii >= 7', False),
         ('b#digit >= 8', False),
 
-        ('b,', True),
+        ('b,', False),
         ('1/length', True)
     ],
     'address': [
@@ -176,9 +176,9 @@ featureConfig = {
         ('%keyword-address', True),
         ('%keyword-phone', True),
 
-        ('bStreet-Term', True),
-        ('bWardDistrict-Term', True),
-        ('bCity-Term', True),
+        ('bStreet-Term', False),
+        ('bWardDistrict-Term', False),
+        ('bCity-Term', False),
 
         ('#max-digit-skip-all-punctuation', False),
         ('b#max-digit-skip-all-punctuation >= 8', True),

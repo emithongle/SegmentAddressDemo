@@ -36,10 +36,19 @@ def checkCandidate(text, lc, other):
         return (list(score.keys())[list(score.values()).index(mxvalue)], mxvalue)
     return (other, 0)
 
+def fixMisunderstood(text):
+    text = text.replace('o', '0')
+    text = text.replace('d', '0')
+    text = text.replace('q', '0')
+    return text
+
 def calScore(text, ttype):
     if (ttype in ['name', 'address', 'phone']):
+        if (ttype == 'phone'):
+            text = fixMisunderstood(text)
         return calANNProba(models[ttype], text, ttype)[0]
     elif (ttype == 'fax'):
+        text = fixMisunderstood(text)
         return calANNProba(models['phone'], text, 'phone')[0]
     elif (ttype == 'email'):
         return 1 if (len(email_regex.findall(text)) > 0) else 0

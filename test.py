@@ -27,18 +27,39 @@ from address_segmentation.segment_api import segment_api_v1_0, segment_api_v1_1
 
 # addr = 'CHI NHANH TAI TP. HO CHI MINH\nDia chi: 461 Ba Hat - Phuong 8 - Quan 10 - TP. Ho Chi Minh\nDien thoai: 08. 6264 5449\n' \
 #        'Email: inhoadon@inhanoi.vn | Website: www.inhoadonhcm.com'
-# print(segment_api_v1_1(addr))
 
-from logs.loger import saveLog
+# addr = 'D938317113, DAI HOI CO DONG CTY Cp Nong NGHIEP HUNG HAU. 76 Le Lai, Ben Nghe, 1, Ho Chi Minh'
+# addr = 'Mot, 15 Huynh Tan Phat, Quan 7, O96314. 5558–0886545654'
+addr = 'Anh Chien, 561 Nguyen Thi Thap, Tan Phong, Quan 7, Ho Chi Minh, O919541177'
+print(segment_api_v1_1(addr))
 
-log = {
-       'uploadTime': 1.2,
-       'ocrTime': 4,
-       'segmentTime': 5,
-       'ocrText': 'CHI NHANH TAI TP. HO CHI MINH\nDia chi: 461 Ba Hat - Phuong 8 - Quan 10 - TP. Ho Chi Minh\nDien thoai: 08. 6264 5449\n'\
-              'Email: inhoadon@inhanoi.vn | Website: www.inhoadonhcm.com',
-       'imageID': 'image-id'
-}
+# from logs.loger import saveLog
+#
+# log = {
+#        'uploadTime': 1.2,
+#        # 'ocrTime': 4,
+#        'segmentTime': 5,
+#        # 'ocrText': 'CHI NHANH TAI TP. HO CHI MINH\nDia chi: 461 Ba Hat - Phuong 8 - Quan 10 - TP. Ho Chi Minh\nDien thoai: 08. 6264 5449\n'\
+#        #        'Email: inhoadon@inhanoi.vn | Website: www.inhoadonhcm.com',
+#        'ocrText': 'abc',
+#        'imageID': 'image-id',
+#        'idResutl': 1
+# }
+#
+# if (saveLog(log)):
+#        print('OK!')
 
-if (saveLog(log)):
-       print('OK!')
+# from config import models
+# from db.store import saveJson
+#
+# def f(x):
+#        for key in x:
+#               for _ in x[key]:
+#                      x[key][_] = x[key][_].tolist()
+#        return x
+#
+# saveJson(f(models['name']), 'weight_name.json')
+# saveJson(f(models['address']), 'weight_address.json')
+# saveJson(f(models['phone']), 'weight_phone.json')
+
+None
